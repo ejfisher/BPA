@@ -1,13 +1,11 @@
-from Adafruit_BMP085 import BMP085
+import board
+import busio
+import adafruit_bmp280
 
-bmp = BMP085(0x77)
+i2c = busio.I2C(board.SCL, board.SDA)
+sensor = adafruit_bmp280.Adafruit_BMP280_I2C(i2c)
 
-temp = bmp.readTemperature()
-
-pressure = bmp.readPressure()
-
-altitude = bmp.readAltitude()
-
-print("Temperature: %.2f C" % temp)
-print("Pressure:    %.2f hPa" % (pressure / 100.0))
-print("Altitude:    %.2f" % altitude)
+print('Temperature: {} C'.format(sensor.temperature))
+print('Pressure: {}hPa'.format(sensor.pressure))
+sensor.sea_level_pressure = 1013.25
+print('Altitude: {} meters'.format(sensor.altitude))
